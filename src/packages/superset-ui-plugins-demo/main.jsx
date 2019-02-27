@@ -7,8 +7,8 @@ class MainDemo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      externalApiService: '',
-      externalApiParam: '',
+      externalApiService: 'reports',
+      externalApiParam: 'sachima_example_filters',
       isRefresh: false,
     };
   }
@@ -26,6 +26,8 @@ class MainDemo extends Component {
     return (
       <div className='pannel-body'>
         <SupersetControls
+          externalApiService={this.state.externalApiService}
+          externalApiParam={this.state.externalApiParam}
           onClick={() => this.handleClick()}
           onChange={e => this.handleChange(e)}
         />

@@ -10,12 +10,14 @@ class SupersetCtrols extends React.Component {
         <div>
           <Input
             addonBefore='External API Service'
+            value={this.props.externalApiService}
             onChange={e =>
               this.props.onChange({ externalApiService: e.target.value })
             }
           />
           <Input
             addonBefore='External API Parameters'
+            value={this.props.externalApiParam}
             onChange={e =>
               this.props.onChange({ externalApiParam: e.target.value })
             }

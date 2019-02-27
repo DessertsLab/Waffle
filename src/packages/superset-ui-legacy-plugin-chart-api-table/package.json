@@ -1,0 +1,39 @@
+{
+  "name": "superset-ui-legacy-plugin-chart-api-table",
+  "version": "0.1.0",
+  "description": "Superset Legacy Chart - API Table",
+  "sideEffects": false,
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "files": [
+    "esm",
+    "lib"
+  ],
+  "keywords": [
+    "superset"
+  ],
+  "author": "pphszx",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/DessertsLab/Waffle",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@data-ui/xy-chart": "^0.0.75",
+    "@superset-ui/core": "^0.9.x",
+    "@superset-ui/dimension": "^0.9.x",
+    "antd": "^3.13.5",
+    "d3-color": "^1.2.3",
+    "prop-types": "^15.6.2",
+    "shortid": "^2.2.14",
+    "xlsx": "^0.14.1"
+  },
+  "peerDependencies": {
+    "@superset-ui/chart": "^0.9.x",
+    "@superset-ui/color": "^0.9.x",
+    "@superset-ui/number-format": "^0.9.x",
+    "@superset-ui/time-format": "^0.9.x",
+    "@superset-ui/translation": "^0.9.x",
+    "react": "^15 || ^16"
+  }
+}

@@ -433,7 +433,10 @@ class ApiTableRaw extends React.Component {
               <Alert message='API调用错误' type='error' />
             </div>
           ) : (
-            <div ref={el => (this.antdTable = el)} style={{ marginTop: 20 }}>
+            <div
+              ref={el => (this.antdTable = el)}
+              style={{ marginTop: 20, height: '475px', overflowY: 'scroll' }}
+            >
               <Table
                 dataSource={this.getAntdDataSource(dataSource)}
                 columns={this.getAntdColumns(columns)}

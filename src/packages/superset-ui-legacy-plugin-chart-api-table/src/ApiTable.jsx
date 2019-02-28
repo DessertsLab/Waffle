@@ -437,6 +437,18 @@ class ApiTableRaw extends React.Component {
               <Table
                 dataSource={this.getAntdDataSource(dataSource)}
                 columns={this.getAntdColumns(columns)}
+                pagination={{
+                  pageSizeOptions: [
+                    '10',
+                    '20',
+                    '30',
+                    '40',
+                    `${dataSource.length}`,
+                  ],
+                  showSizeChanger: true,
+                  showQuickJumper: true,
+                  showTotal: total => `共 ${total} 行`,
+                }}
                 loading={loading}
                 bordered={true}
                 scroll={{ x: 360 }}

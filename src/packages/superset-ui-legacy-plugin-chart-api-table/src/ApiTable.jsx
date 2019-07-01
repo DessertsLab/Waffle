@@ -48,6 +48,7 @@ class ApiTableRaw extends React.Component {
       searchText: '',
     };
 
+    this.getRequest = this.getRequest.bind(this);
     this.getData = this.getData.bind(this);
     this.setDataSource = this.setDataSource.bind(this);
     this.onSearchSubmit = this.onSearchSubmit.bind(this);
@@ -72,6 +73,14 @@ class ApiTableRaw extends React.Component {
   setDataSource(data, isUpdateControls) {
     const { dataSource, columns, controls } = data;
     if (isUpdateControls) {
+      //更新 URL Param
+      let requests = this.getRequest();
+      for (let i = 0; i < controls.length; i++) {
+        if (controls[i].id in requests) {
+          controls[i].props.value = requests[controls[i].id];
+        }
+      }
+
       this.setState({
         controls,
         dataSource,
@@ -135,11 +144,30 @@ class ApiTableRaw extends React.Component {
     this.setState({ searchText: '' });
   }
 
+  getRequest() {
+    const url = window.location.search; //获取url中"?"符后的字串
+    let theRequest = {};
+
+    if (url.indexOf('?') !== -1) {
+      let str = url.substr(1);
+      let strs = str.split('&');
+      for (let i = 0; i < strs.length; i++) {
+        theRequest[decodeURI(strs[i].split('=')[0])] = decodeURI(
+          strs[i].split('=')[1]
+        );
+      }
+    }
+    return theRequest;
+  }
+
   getData(transferUrl, params, isUpdateControls = false) {
     this.setState({ loading: true });
     // console.log(transferUrl);
     let csrfToken = document.getElementById('csrf_token');
     csrfToken = csrfToken ? csrfToken.value : '';
+
+    // 更新 URL Param
+    Object.assign(params, this.getRequest());
 
     for (const [key, value] of Object.entries(params)) {
       // 删除undefined, null, 空值, 空数组

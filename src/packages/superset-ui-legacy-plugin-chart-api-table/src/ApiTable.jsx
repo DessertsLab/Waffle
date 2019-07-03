@@ -120,7 +120,9 @@ class ApiTableRaw extends React.Component {
 
     /* Generate Workbook */
     const wb = xlsx.utils.book_new();
-    const ws = xlsx.utils.json_to_sheet(dataSource, { header: columns });
+    const ws = xlsx.utils.json_to_sheet(dataSource, {
+      header: columns.map(col => col.title),
+    });
     xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     // const elt = this.antdTable.getElementsByTagName('table')[0]
@@ -382,16 +384,26 @@ class ApiTableRaw extends React.Component {
     if (columns) {
       const colWidth =
         parseFloat(((1 / columns.length) * 100).toPrecision(12)) + '%';
-      antdCol = columns.map(col => {
-        const colObj = {};
-        colObj['title'] = col;
-        colObj['dataIndex'] = col;
-        colObj['key'] = col;
-        colObj['width'] = colWidth;
-        colObj['sorter'] = (opt1, opt2) => (opt1[col] < opt2[col] ? -1 : 1);
-        Object.assign(colObj, this.getColumnSearchProps(col));
-        return colObj;
-      });
+
+      for (let col of columns) {
+        col['width'] = colWidth;
+        if ('render' in col && 'action' in col['render']) {
+          const url = col.render.action;
+          col['render'] = (text, record, index) => (
+            <span>
+              <a
+                href={`${url + text}`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >{`${text}`}</a>
+            </span>
+          );
+        }
+        col['sorter'] = (opt1, opt2) => (opt1 < opt2 ? -1 : 1);
+        Object.assign(col, this.getColumnSearchProps(col.dataIndex));
+      }
+
+      antdCol = columns;
     }
     return antdCol;
   }

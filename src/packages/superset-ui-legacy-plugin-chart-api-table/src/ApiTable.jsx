@@ -11,6 +11,7 @@ import {
   Table,
   Select,
   Button,
+  Switch,
 } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/lib/locale-provider/zh_CN';
@@ -23,6 +24,7 @@ import './ApiTable.css';
 
 moment.locale('zh-cn');
 
+const ButtonGroup = Button.Group;
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -438,36 +440,37 @@ class ApiTableRaw extends React.Component {
                     initialValue: externalApiParam,
                   })(<Input type='hidden' />)}
                 </FormItem>
-                <Button
-                  type='primary'
-                  icon='search'
-                  htmlType='submit'
-                  disabled={loading}
-                >
-                  查询
-                </Button>
-                <Button
-                  icon='delete'
-                  style={{ marginLeft: 8 }}
-                  onClick={this.OnReset}
-                >
-                  重置
-                </Button>
-                <Button
-                  icon='download'
-                  style={{ marginLeft: 8 }}
-                  disabled={loading}
-                  onClick={this.OnDownload}
-                >
-                  下载
-                </Button>
-                <a
-                  style={{ marginLeft: 10, fontSize: 14 }}
-                  onClick={this.OnToggle}
-                >
+                <FormItem style={{ marginBottom: 0, marginRight: 10 }}>
+                  {getFieldDecorator('isForce', {
+                    initialValue: false,
+                  })(
+                    <Switch checkedChildren='强刷' unCheckedChildren='缓存' />
+                  )}
+                </FormItem>
+                <ButtonGroup>
+                  <Button
+                    type='primary'
+                    icon='search'
+                    htmlType='submit'
+                    disabled={loading}
+                  >
+                    查询
+                  </Button>
+                  <Button icon='tool' onClick={this.OnReset}>
+                    重置
+                  </Button>
+                  <Button
+                    icon='cloud-download'
+                    disabled={loading}
+                    onClick={this.OnDownload}
+                  >
+                    下载
+                  </Button>
+                </ButtonGroup>
+                <Button type='link' onClick={this.OnToggle}>
                   {this.state.expand ? '收起' : '展开'}
-                  <Icon type={this.state.expand ? 'up' : 'down'} />
-                </a>
+                  <Icon type={this.state.expand ? 'caret-up' : 'caret-down'} />
+                </Button>
               </Col>
             </Row>
           </Form>

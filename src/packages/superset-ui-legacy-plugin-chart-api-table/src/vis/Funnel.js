@@ -1,5 +1,6 @@
 import React from 'react';
-const Funnel = () => {
+const Funnel = props => {
+    console.log(props.dataSource)
     return <div>hello funnel</div>
 }
 

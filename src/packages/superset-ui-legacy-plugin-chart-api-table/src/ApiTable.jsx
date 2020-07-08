@@ -28,7 +28,7 @@ import 'antd/dist/antd.css';
 import xlsx from 'xlsx';
 import './ApiTable.css';
 
-import Funnel from './funnel-vis/Funnel';
+import Funnel from './vis/Funnel';
 
 moment.locale('zh-cn');
 
@@ -147,7 +147,7 @@ class ApiTable extends React.Component {
         loading: false,
       });
     }
-    console.log(data);
+    // console.log(data);
   }
 
   onSearchSubmit(values) {
@@ -535,7 +535,10 @@ class ApiTable extends React.Component {
               ref={(el) => (this.antdTable = el)}
               style={{ marginTop: 20, height: '475px', overflowY: 'scroll' }}
             >
-              <Funnel></Funnel>
+              <Funnel
+                dataSource={this.getAntdDataSource(dataSource)}
+                columns={this.getAntdColumns(columns)} 
+              ></Funnel>
               <Table
                 dataSource={this.getAntdDataSource(dataSource)}
                 columns={this.getAntdColumns(columns)}

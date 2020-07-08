@@ -8,7 +8,7 @@ class MainDemo extends Component {
     super(props);
     this.state = {
       externalApiService: 'reports',
-      externalApiParam: 'sachima_example_filters',
+      externalApiParam: 's_sachima_funnel_example',
       nRefresh: 0,
     };
   }

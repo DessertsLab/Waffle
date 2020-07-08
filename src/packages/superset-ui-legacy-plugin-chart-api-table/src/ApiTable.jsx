@@ -145,6 +145,7 @@ class ApiTable extends React.Component {
       }
     } else {
       this.setState({
+        controls,
         dataSource,
         columns,
         loading: false,
@@ -164,7 +165,7 @@ class ApiTable extends React.Component {
       drawerVisible: false,
     });
   };
-  
+
 
   onSearchSubmit(values) {
     const { externalApiService } = this.props;
@@ -480,7 +481,11 @@ class ApiTable extends React.Component {
   render() {
     const { externalApiParam } = this.props;
 
-    const { dataSource, columns, isError, loading } = this.state;
+    const { dataSource, columns, isError, loading, controls } = this.state;
+
+    console.log("******************************")
+    console.log(dataSource)
+    console.log(controls)
 
     // 隐藏字段名称为name，和RPC要求一致
     return (
@@ -580,25 +585,26 @@ class ApiTable extends React.Component {
                   // scroll={true}
                   size='small'
                 />
-                <Drawer
-                  title="Data Visualization"
-                  placement="right"
-                  width={1020}
-                  closable={true}
-                  onClose={this.onDrawerClose}
-                  visible={this.state.drawerVisible}
-                  getContainer={false}
-                  drawerStyle={{ position: 'absolute',backgroundColor: '#393862' }}
-                  destroyOnClose
-                >
-                  <Funnel
-                    dataSource={this.getAntdDataSource(dataSource)}
-                    columns={this.getAntdColumns(columns)}
-                  ></Funnel>
-                </Drawer>
               </div>
             )}
         </div>
+        <Drawer
+          title="Data Visualization"
+          placement="right"
+          forceRender={true}
+          width={1259}
+          closable={true}
+          onClose={this.onDrawerClose}
+          visible={this.state.drawerVisible}
+          getContainer={true}
+          drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
+          destroyOnClose
+        >
+          <Funnel
+            dataSource={this.getAntdDataSource(dataSource)}
+            columns={this.getAntdColumns(columns)}
+          ></Funnel>
+        </Drawer>
       </ConfigProvider>
     );
   }

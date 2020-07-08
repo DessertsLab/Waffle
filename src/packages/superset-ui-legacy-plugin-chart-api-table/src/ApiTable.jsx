@@ -531,7 +531,7 @@ class ApiTable extends React.Component {
                     下载
                   </Button>
                   <Button
-                    type='primary'
+                    type='secondary'
                     icon={<BarChartOutlined />}
                     disabled={loading}
                     onClick={this.showDrawer}

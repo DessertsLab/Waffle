@@ -61,7 +61,8 @@ class ApiTable extends React.Component {
       loading: false,
       expand: true,
       searchText: '',
-      drawerVisible: false
+      drawerVisible: false,
+      vis: null
     };
 
     this.getRequest = this.getRequest.bind(this);
@@ -86,9 +87,20 @@ class ApiTable extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const { externalApiParam, externalApiService } = this.props;
+    if (prevProps.externalApiParam !== externalApiParam) {
+      this.getData(externalApiService, {name:externalApiParam}, true);
+    }
+  }
+
+
+
+
   // TODO:考虑二次查询的逻辑
   setDataSource(data, isUpdateControls) {
-    const { dataSource, columns, controls } = data;
+    const { dataSource, columns, controls, vis } = data;
+    // console.log('data', data)
     if (isUpdateControls) {
       const { externalApiService, externalApiParam } = this.props;
       const presetParam = { name: externalApiParam, isForce: false };
@@ -135,6 +147,7 @@ class ApiTable extends React.Component {
         controls,
         dataSource,
         columns,
+        vis,
         loading: false,
       });
 
@@ -148,6 +161,7 @@ class ApiTable extends React.Component {
         controls,
         dataSource,
         columns,
+        vis,
         loading: false,
       });
     }
@@ -267,8 +281,9 @@ class ApiTable extends React.Component {
       .then((Response) => Response.json())
       .then((result) => this.setDataSource(result, isUpdateControls))
       .catch((error) => {
-        console.log(error);
-        this.setState({ isError: error });
+        console.log("error")
+        // console.log(error);
+        // this.setState({ isError: error });
       });
   }
 
@@ -343,6 +358,7 @@ class ApiTable extends React.Component {
       // 先渲染行，再渲染列
       children = controlsArray.map((itemArray, indexArray) => (
         <Row
+          key={indexArray}
           gutter={{ md: 8, lg: 24, xl: 48 }}
           style={{ display: indexArray < count ? 'flex' : 'none' }}
         >
@@ -353,7 +369,7 @@ class ApiTable extends React.Component {
             const options = item.option
               ? item.option
                 .sort((opt1, opt2) => (opt1 < opt2 ? -1 : 1))
-                .map((c) => <Option value={c}>{c}</Option>)
+                .map((c) => <Option key={c} value={c}>{c}</Option>)
               : null;
 
             const props = item.props
@@ -481,11 +497,12 @@ class ApiTable extends React.Component {
   render() {
     const { externalApiParam } = this.props;
 
-    const { dataSource, columns, isError, loading, controls } = this.state;
+    const { dataSource, columns, isError, loading, controls, vis } = this.state;
 
-    console.log("******************************")
-    console.log(dataSource)
-    console.log(controls)
+    // console.log("******************************")
+    // console.log('dataSource',dataSource)
+    // console.log('controls',controls)
+    // console.log('vis', vis)
 
     // 隐藏字段名称为name，和RPC要求一致
     return (
@@ -513,6 +530,7 @@ class ApiTable extends React.Component {
                     marginBottom: 0,
                     marginRight: 10,
                   }}
+                  valuePropName="checked"
                 >
                   <Switch checkedChildren='强刷' unCheckedChildren='缓存' />
                 </FormItem>
@@ -535,14 +553,19 @@ class ApiTable extends React.Component {
                   >
                     下载
                   </Button>
-                  <Button
-                    type='secondary'
-                    icon={<BarChartOutlined />}
-                    disabled={loading}
-                    onClick={this.showDrawer}
-                  >
-                    可视化
-                  </Button>
+                  {vis ?
+                    (
+                      <Button
+                        type='secondary'
+                        icon={<BarChartOutlined />}
+                        disabled={loading}
+                        onClick={this.showDrawer}
+                      >
+                        可视化
+                      </Button>
+                    )
+                    : ''
+                  }
                 </ButtonGroup>
                 <Button type='link' onClick={this.OnToggle}>
                   {this.state.expand ? '收起' : '展开'}
@@ -588,23 +611,27 @@ class ApiTable extends React.Component {
               </div>
             )}
         </div>
-        <Drawer
-          title="Data Visualization"
-          placement="right"
-          forceRender={true}
-          width={1259}
-          closable={true}
-          onClose={this.onDrawerClose}
-          visible={this.state.drawerVisible}
-          getContainer={true}
-          drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
-          destroyOnClose
-        >
-          <Funnel
-            dataSource={this.getAntdDataSource(dataSource)}
-            columns={this.getAntdColumns(columns)}
-          ></Funnel>
-        </Drawer>
+        {
+          vis ? (
+            <Drawer
+              title="Data Visualization"
+              placement="right"
+              forceRender={true}
+              width={1259}
+              closable={true}
+              onClose={this.onDrawerClose}
+              visible={this.state.drawerVisible}
+              getContainer={true}
+              drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
+              destroyOnClose
+            >
+              <Funnel
+                dataSource={this.getAntdDataSource(dataSource)}
+                columns={this.getAntdColumns(columns)}
+              ></Funnel>
+            </Drawer>
+          ) : ''
+        }
       </ConfigProvider>
     );
   }

@@ -6,7 +6,7 @@ import 'funnel-graph-js/dist/css/theme.min.css'
 const Funnel = props => {
 
     useEffect(() => {
-        console.log("data changed")
+        // console.log("data changed")
         if (props.dataSource !== undefined && props.dataSource.length != 0) {
             // console.log('11111111', 11111111)
             // console.log(props.dataSource)

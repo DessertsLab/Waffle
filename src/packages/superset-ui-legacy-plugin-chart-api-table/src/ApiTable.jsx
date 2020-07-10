@@ -245,6 +245,7 @@ class ApiTable extends React.Component {
 
   getData(transferUrl, params, isUpdateControls = false) {
     this.setState({ loading: true });
+    this.setState({ isError: null })
     // console.log(transferUrl, params, isUpdateControls);
     let csrfToken = document.getElementById('csrf_token');
     csrfToken = csrfToken ? csrfToken.value : '';
@@ -281,9 +282,10 @@ class ApiTable extends React.Component {
       .then((Response) => Response.json())
       .then((result) => this.setDataSource(result, isUpdateControls))
       .catch((error) => {
-        console.log("error")
+        // console.log("error")
         // console.log(error);
-        // this.setState({ isError: error });
+        this.setState({ isError: error, loading: false });
+        // this.setState()
       });
   }
 
@@ -628,7 +630,7 @@ class ApiTable extends React.Component {
               {vis.type === "funnel" ? (<Funnel
                 dataSource={this.getAntdDataSource(dataSource)}
                 columns={this.getAntdColumns(columns)}
-              ></Funnel>) : <BarRace data={dataSource} columns={columns}/>}
+              ></Funnel>) : <BarRace data={dataSource} columns={columns} />}
 
             </Drawer>
           ) : ''

@@ -82,7 +82,7 @@ class ApiTable extends React.Component {
   componentDidMount() {
     const { externalApiService } = this.props;
     this.formRef.current.validateFields().then((values) => {
-      console.log('Form值: ', values);
+      // console.log('Form值: ', values);
       this.getData(externalApiService, values, true);
     });
   }

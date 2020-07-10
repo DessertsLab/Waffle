@@ -31,6 +31,7 @@ import xlsx from 'xlsx';
 import './ApiTable.css';
 
 import Funnel from './vis/Funnel';
+import BarRace from './vis/BarRace';
 
 moment.locale('zh-cn');
 
@@ -624,10 +625,11 @@ class ApiTable extends React.Component {
               drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
               destroyOnClose
             >
-              <Funnel
+              {/* <Funnel
                 dataSource={this.getAntdDataSource(dataSource)}
                 columns={this.getAntdColumns(columns)}
-              ></Funnel>
+              ></Funnel> */}
+              <BarRace/>
             </Drawer>
           ) : ''
         }

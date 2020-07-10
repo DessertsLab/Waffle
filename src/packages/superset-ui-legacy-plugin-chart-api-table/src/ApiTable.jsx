@@ -82,7 +82,7 @@ class ApiTable extends React.Component {
   componentDidMount() {
     const { externalApiService } = this.props;
     this.formRef.current.validateFields().then((values) => {
-      // console.log('Form值: ', values);
+      console.log('Form值: ', values);
       this.getData(externalApiService, values, true);
     });
   }
@@ -90,7 +90,7 @@ class ApiTable extends React.Component {
   componentDidUpdate(prevProps) {
     const { externalApiParam, externalApiService } = this.props;
     if (prevProps.externalApiParam !== externalApiParam) {
-      this.getData(externalApiService, {name:externalApiParam}, true);
+      this.getData(externalApiService, { name: externalApiParam }, true);
     }
   }
 
@@ -182,9 +182,8 @@ class ApiTable extends React.Component {
 
 
   onSearchSubmit(values) {
-    const { externalApiService } = this.props;
-    // console.log('Form值: ', values);
-    this.getData(externalApiService, values);
+    const { externalApiService, externalApiParam } = this.props;
+    this.getData(externalApiService, { ...values, name: externalApiParam });
   }
 
   OnReset() {

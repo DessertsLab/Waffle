@@ -4,12 +4,12 @@ import 'funnel-graph-js/dist/css/main.min.css'
 import 'funnel-graph-js/dist/css/theme.min.css'
 
 const Funnel = props => {
+    // console.log('props.data', props.data)
+    // console.log('props.columns', props.columns)
 
     useEffect(() => {
         // console.log("data changed")
-        if (props.dataSource !== undefined && props.dataSource.length != 0) {
-            // console.log('11111111', 11111111)
-            // console.log(props.dataSource)
+        if (props.data !== undefined && props.data.length !== 0) {
             const draw = (labels, subLabels, colors, values, direction) => {
                 var graph = new FunnelGraph({
                     container: '.funnel',
@@ -27,9 +27,10 @@ const Funnel = props => {
                 });
                 graph.draw();
             }
+
             const labels = props.columns.map(col => col.dataIndex).slice(1) // 去掉第一个subLabel分组字段
             // console.log('labels', labels)
-            const subLabels = Object.keys(props.dataSource).map(k => props.dataSource[k][props.columns.map(col => col.dataIndex)[0]])
+            const subLabels = Object.keys(props.data).map(k => props.data[k][props.columns.map(col => col.dataIndex)[0]])
             // console.log('subLabels', subLabels)
             const colors = [
                 ['#FFB178', '#FF78B1', '#FF3C8E'],
@@ -43,18 +44,19 @@ const Funnel = props => {
             ]
             const direction = 'horizontal'
             labels.forEach(col => {
-                let one_row_for_values = props.dataSource.map(k =>
+                let one_row_for_values = props.data.map(k =>
                     parseInt(k[col])
                 )
                 values.push(one_row_for_values)
             });
             // console.log(values)
+            // console.log('values', values)
             draw(labels, subLabels, colors, values, direction)
         }
-    }, [props.dataSource])
+    }, [props])
 
     const Content = () => {
-        if (props.dataSource) {
+        if (props.data) {
             return <div className="funnel" style={{ backgroundColor: '#393862' }}></div>
         } else {
             return <></>

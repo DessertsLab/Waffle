@@ -30,9 +30,7 @@ import 'antd/dist/antd.css';
 import xlsx from 'xlsx';
 import './ApiTable.css';
 
-import Funnel from './vis/Funnel';
-import BarRace from './vis/BarRace';
-
+import Vis from './vis/Vis';
 moment.locale('zh-cn');
 
 const ButtonGroup = Button.Group;
@@ -627,10 +625,11 @@ class ApiTable extends React.Component {
               drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
               destroyOnClose
             >
-              {vis.type === "funnel" ? (<Funnel
-                dataSource={this.getAntdDataSource(dataSource)}
+              {/* {vis.type === "funnel" ? (<Funnel
+                data={this.getAntdDataSource(dataSource)}
                 columns={this.getAntdColumns(columns)}
-              ></Funnel>) : <BarRace data={dataSource} columns={columns} />}
+              ></Funnel>) : <BarRace data={dataSource} columns={columns} />} */}
+              <Vis data={dataSource} columns={columns} type={vis.type} />
 
             </Drawer>
           ) : ''

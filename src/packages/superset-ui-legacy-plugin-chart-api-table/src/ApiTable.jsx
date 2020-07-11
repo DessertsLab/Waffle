@@ -614,7 +614,7 @@ class ApiTable extends React.Component {
         {
           vis ? (
             <Drawer
-              title="Data Visualization"
+              title={vis.title}
               placement="right"
               forceRender={true}
               width={1659}
@@ -625,12 +625,7 @@ class ApiTable extends React.Component {
               drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
               destroyOnClose
             >
-              {/* {vis.type === "funnel" ? (<Funnel
-                data={this.getAntdDataSource(dataSource)}
-                columns={this.getAntdColumns(columns)}
-              ></Funnel>) : <BarRace data={dataSource} columns={columns} />} */}
-              <Vis data={dataSource} columns={columns} type={vis.type} />
-
+              <Vis data={dataSource} columns={columns} type={vis.type} title={vis.title} />
             </Drawer>
           ) : ''
         }

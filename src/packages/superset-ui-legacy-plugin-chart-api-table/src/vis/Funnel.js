@@ -4,11 +4,8 @@ import 'funnel-graph-js/dist/css/main.min.css'
 import 'funnel-graph-js/dist/css/theme.min.css'
 
 const Funnel = props => {
-    // console.log('props.data', props.data)
-    // console.log('props.columns', props.columns)
 
     useEffect(() => {
-        // console.log("data changed")
         if (props.data !== undefined && props.data.length !== 0) {
             const draw = (labels, subLabels, colors, values, direction) => {
                 var graph = new FunnelGraph({
@@ -49,8 +46,6 @@ const Funnel = props => {
                 )
                 values.push(one_row_for_values)
             });
-            // console.log(values)
-            // console.log('values', values)
             draw(labels, subLabels, colors, values, direction)
         }
     }, [props])

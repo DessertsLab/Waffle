@@ -625,7 +625,7 @@ class ApiTable extends React.Component {
               drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
               destroyOnClose
             >
-              <Vis data={dataSource} columns={columns} type={vis.type} title={vis.title} />
+              <Vis data={dataSource} columns={columns} type={vis.type} title={vis.title} params={vis.params} />
             </Drawer>
           ) : ''
         }

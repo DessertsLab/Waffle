@@ -6,13 +6,13 @@ import GridLine from './GridLine';
 
 const Vis = props => {
     if (props.type === "funnel") {
-        return <Funnel data={props.data} columns={props.columns} title={props.title} />
+        return <Funnel data={props.data} columns={props.columns} title={props.title} params={props.params} />
     } else if (props.type === "bar_race") {
-        return <BarRace data={props.data} columns={props.columns} title={props.title} />
+        return <BarRace data={props.data} columns={props.columns} title={props.title} params={props.params} />
     } else if (props.type === "sankey") {
-        return <Sankey data={props.data} columns={props.columns} title={props.title} />
+        return <Sankey data={props.data} columns={props.columns} title={props.title} params={props.params}/>
     } else if (props.type === "gridline") {
-        return <GridLine data={props.data} columns={props.columns} title={props.title} />
+        return <GridLine data={props.data} columns={props.columns} title={props.title} params={props.params} />
     }
 
     return <>'vis type not exists'</>

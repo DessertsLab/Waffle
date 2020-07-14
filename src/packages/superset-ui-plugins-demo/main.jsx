@@ -9,7 +9,7 @@ class MainDemo extends Component {
     super(props);
     this.state = {
       externalApiService: 'reports',
-      externalApiParam: 's_sankey_main',
+      externalApiParam: 's_arima_main',
       // externalApiParam: 's_1001_main',
     };
   }

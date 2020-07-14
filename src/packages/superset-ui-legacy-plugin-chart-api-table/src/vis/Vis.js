@@ -2,6 +2,7 @@ import React from 'react'
 import Funnel from './Funnel';
 import BarRace from './BarRace';
 import Sankey from './Sankey'
+import GridLine from './GridLine';
 
 const Vis = props => {
     if (props.type === "funnel") {
@@ -10,6 +11,8 @@ const Vis = props => {
         return <BarRace data={props.data} columns={props.columns} title={props.title} />
     } else if (props.type === "sankey") {
         return <Sankey data={props.data} columns={props.columns} title={props.title} />
+    } else if (props.type === "gridline") {
+        return <GridLine data={props.data} columns={props.columns} title={props.title} />
     }
 
     return <>'vis type not exists'</>

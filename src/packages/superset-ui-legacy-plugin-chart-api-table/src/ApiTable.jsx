@@ -178,9 +178,8 @@ class ApiTable extends React.Component {
   }
 
   onSearchSubmit(values) {
-    const { externalApiService } = this.props;
-    // console.log('Form值: ', values);
-    this.getData(externalApiService, values);
+    const { externalApiService, externalApiParam } = this.props;
+    this.getData(externalApiService, { ...values, name: externalApiParam });
   }
 
   OnReset() {

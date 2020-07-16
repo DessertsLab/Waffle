@@ -63,7 +63,7 @@ const Sankey = props => {
                         top: 20.0,
                         right: 150.0,
                         bottom: 25.0,
-                        layoutIterations: props.params.layoutIterations,
+                        layoutIterations: (props.params?props.params.layoutIterations:1),
                         data: nodes_list,
                         links: links,
                         lineStyle: {

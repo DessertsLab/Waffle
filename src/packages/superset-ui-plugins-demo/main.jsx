@@ -3,7 +3,6 @@ import ApiTable from '../superset-ui-legacy-plugin-chart-api-table/src/ApiTable'
 import '../superset-ui-legacy-plugin-chart-api-table/src/ApiTable.css';
 import Controls from '../../controls/Controls';
 
-
 class MainDemo extends Component {
   constructor(props) {
     super(props);
@@ -24,13 +23,12 @@ class MainDemo extends Component {
         <Controls
           externalApiService={this.state.externalApiService}
           externalApiParam={this.state.externalApiParam}
-          onChange={e => this.handleChange(e)}
+          onChange={(e) => this.handleChange(e)}
         />
         <ApiTable
           externalApiService={this.state.externalApiService}
           externalApiParam={this.state.externalApiParam}
         />
-        )
       </div>
     );
   }

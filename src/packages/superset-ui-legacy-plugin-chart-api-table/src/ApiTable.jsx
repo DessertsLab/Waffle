@@ -11,7 +11,7 @@ import {
   Select,
   Button,
   Switch,
-  Drawer
+  Drawer,
 } from 'antd';
 import {
   BarChartOutlined,
@@ -47,7 +47,6 @@ const Components = {
 
 class ApiTable extends React.Component {
   // https://ant.design/components/form-cn/#components-form-demo-control-ref
-  formRef = React.createRef();
 
   constructor(props) {
     super(props);
@@ -61,8 +60,10 @@ class ApiTable extends React.Component {
       expand: true,
       searchText: '',
       drawerVisible: false,
-      vis: null
+      vis: null,
     };
+
+    this.formRef = React.createRef();
 
     this.getRequest = this.getRequest.bind(this);
     this.getData = this.getData.bind(this);
@@ -76,6 +77,8 @@ class ApiTable extends React.Component {
     this.OnDownload = this.OnDownload.bind(this);
     this.onTableSearch = this.onTableSearch.bind(this);
     this.onTableReset = this.onTableReset.bind(this);
+    this.showDrawer = this.showDrawer.bind(this);
+    this.onDrawerClose = this.onDrawerClose.bind(this);
   }
 
   componentDidMount() {
@@ -92,9 +95,6 @@ class ApiTable extends React.Component {
       this.getData(externalApiService, { name: externalApiParam }, true);
     }
   }
-
-
-
 
   // TODO:考虑二次查询的逻辑
   setDataSource(data, isUpdateControls) {
@@ -157,32 +157,30 @@ class ApiTable extends React.Component {
       }
     } else {
       this.setState({
-        controls,
         dataSource,
         columns,
         vis,
         loading: false,
       });
     }
-    // console.log(data);
   }
 
-  showDrawer = () => {
+  showDrawer() {
     this.setState({
       drawerVisible: true,
     });
-  };
+  }
 
-  onDrawerClose = () => {
+  onDrawerClose() {
     this.setState({
       drawerVisible: false,
     });
-  };
-
+  }
 
   onSearchSubmit(values) {
-    const { externalApiService, externalApiParam } = this.props;
-    this.getData(externalApiService, { ...values, name: externalApiParam });
+    const { externalApiService } = this.props;
+    // console.log('Form值: ', values);
+    this.getData(externalApiService, values);
   }
 
   OnReset() {
@@ -242,8 +240,7 @@ class ApiTable extends React.Component {
   }
 
   getData(transferUrl, params, isUpdateControls = false) {
-    this.setState({ loading: true });
-    this.setState({ isError: null })
+    this.setState({ loading: true, isError: null });
     // console.log(transferUrl, params, isUpdateControls);
     let csrfToken = document.getElementById('csrf_token');
     csrfToken = csrfToken ? csrfToken.value : '';
@@ -280,10 +277,7 @@ class ApiTable extends React.Component {
       .then((Response) => Response.json())
       .then((result) => this.setDataSource(result, isUpdateControls))
       .catch((error) => {
-        // console.log("error")
-        // console.log(error);
         this.setState({ isError: error, loading: false });
-        // this.setState()
       });
   }
 
@@ -295,46 +289,46 @@ class ApiTable extends React.Component {
         confirm,
         clearFilters,
       }) => (
-          <div style={{ padding: 8 }}>
-            <Input
-              ref={(node) => {
-                this.searchInput = node;
-              }}
-              placeholder={`搜索 ${dataIndex}`}
-              value={selectedKeys[0]}
-              onChange={(e) =>
-                setSelectedKeys(e.target.value ? [e.target.value] : [])
-              }
-              onPressEnter={() => this.onTableSearch(selectedKeys, confirm)}
-              style={{ width: 188, marginBottom: 8, display: 'block' }}
-            />
-            <Button
-              type='primary'
-              onClick={() => this.onTableSearch(selectedKeys, confirm)}
-              icon={<SearchOutlined />}
-              size='small'
-              style={{ width: 90, marginRight: 8 }}
-            >
-              确定
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => {
+              this.searchInput = node;
+            }}
+            placeholder={`搜索 ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() => this.onTableSearch(selectedKeys, confirm)}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type='primary'
+            onClick={() => this.onTableSearch(selectedKeys, confirm)}
+            icon={<SearchOutlined />}
+            size='small'
+            style={{ width: 90, marginRight: 8 }}
+          >
+            确定
           </Button>
-            <Button
-              onClick={() => this.onTableReset(clearFilters)}
-              size='small'
-              style={{ width: 90 }}
-            >
-              重置
+          <Button
+            onClick={() => this.onTableReset(clearFilters)}
+            size='small'
+            style={{ width: 90 }}
+          >
+            重置
           </Button>
-          </div>
-        ),
+        </div>
+      ),
       filterIcon: (filtered) => (
         <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
       ),
       onFilter: (value, record) =>
         record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : false,
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
@@ -368,17 +362,21 @@ class ApiTable extends React.Component {
             const CustomLabel = item.label ? item.label : item.id;
             const options = item.option
               ? item.option
-                .sort((opt1, opt2) => (opt1 < opt2 ? -1 : 1))
-                .map((c) => <Option key={c} value={c}>{c}</Option>)
+                  .sort((opt1, opt2) => (opt1 < opt2 ? -1 : 1))
+                  .map((c) => (
+                    <Option key={c} value={c}>
+                      {c}
+                    </Option>
+                  ))
               : null;
 
             const props = item.props
               ? Object.keys(item.props)
-                .filter((s) => s !== 'value')
-                .reduce((obj, key) => {
-                  obj[key] = item.props[key];
-                  return obj;
-                }, {})
+                  .filter((s) => s !== 'value')
+                  .reduce((obj, key) => {
+                    obj[key] = item.props[key];
+                    return obj;
+                  }, {})
               : null;
 
             // 根据类型初始化
@@ -426,7 +424,7 @@ class ApiTable extends React.Component {
                 >
                   <CustomTag
                     {...props}
-                  // onChange={(...args) => { this.onSearchChange(item, ...args); }}
+                    // onChange={(...args) => { this.onSearchChange(item, ...args); }}
                   >
                     {options}
                   </CustomTag>
@@ -497,12 +495,7 @@ class ApiTable extends React.Component {
   render() {
     const { externalApiParam } = this.props;
 
-    const { dataSource, columns, isError, loading, controls, vis } = this.state;
-
-    // console.log("******************************")
-    // console.log('dataSource',dataSource)
-    // console.log('controls',controls)
-    // console.log('vis', vis)
+    const { dataSource, columns, isError, loading, vis } = this.state;
 
     // 隐藏字段名称为name，和RPC要求一致
     return (
@@ -530,7 +523,7 @@ class ApiTable extends React.Component {
                     marginBottom: 0,
                     marginRight: 10,
                   }}
-                  valuePropName="checked"
+                  valuePropName='checked'
                 >
                   <Switch checkedChildren='强刷' unCheckedChildren='缓存' />
                 </FormItem>
@@ -553,27 +546,26 @@ class ApiTable extends React.Component {
                   >
                     下载
                   </Button>
-                  {vis ?
-                    (
-                      <Button
-                        type='secondary'
-                        icon={<BarChartOutlined />}
-                        disabled={loading}
-                        onClick={this.showDrawer}
-                      >
-                        可视化
-                      </Button>
-                    )
-                    : ''
-                  }
+                  {vis ? (
+                    <Button
+                      type='secondary'
+                      icon={<BarChartOutlined />}
+                      disabled={loading}
+                      onClick={this.showDrawer}
+                    >
+                      可视化
+                    </Button>
+                  ) : (
+                    ''
+                  )}
                 </ButtonGroup>
                 <Button type='link' onClick={this.OnToggle}>
                   {this.state.expand ? '收起' : '展开'}
                   {this.state.expand ? (
                     <CaretUpOutlined />
                   ) : (
-                      <CaretDownOutlined />
-                    )}
+                    <CaretDownOutlined />
+                  )}
                 </Button>
               </Col>
             </Row>
@@ -583,52 +575,58 @@ class ApiTable extends React.Component {
               <Alert message='API调用错误' type='error' />
             </div>
           ) : (
-              <div
-                ref={(el) => (this.antdTable = el)}
-                style={{ marginTop: 20, height: '475px', overflowY: 'scroll' }}
-              >
-                <Table
-                  dataSource={this.getAntdDataSource(dataSource)}
-                  columns={this.getAntdColumns(columns)}
-                  pagination={{
-                    pageSizeOptions: [
-                      '10',
-                      '20',
-                      '30',
-                      '40',
-                      `${dataSource.length}`,
-                    ],
-                    showSizeChanger: true,
-                    showQuickJumper: true,
-                    showTotal: (total) => `共 ${total} 行`,
-                  }}
-                  loading={loading}
-                  bordered={true}
-                  scroll={{ x: 360 }}
-                  // scroll={true}
-                  size='small'
-                />
-              </div>
-            )}
-        </div>
-        {
-          vis ? (
-            <Drawer
-              title={vis.title}
-              placement="right"
-              forceRender={true}
-              width={1659}
-              closable={true}
-              onClose={this.onDrawerClose}
-              visible={this.state.drawerVisible}
-              getContainer={true}
-              drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
-              destroyOnClose
+            <div
+              ref={(el) => (this.antdTable = el)}
+              style={{ marginTop: 20, height: '475px', overflowY: 'scroll' }}
             >
-              <Vis data={dataSource} columns={columns} type={vis.type} title={vis.title} params={vis.params} />
-            </Drawer>
-          ) : ''
-        }
+              <Table
+                dataSource={this.getAntdDataSource(dataSource)}
+                columns={this.getAntdColumns(columns)}
+                pagination={{
+                  pageSizeOptions: [
+                    '10',
+                    '20',
+                    '30',
+                    '40',
+                    `${dataSource.length}`,
+                  ],
+                  showSizeChanger: true,
+                  showQuickJumper: true,
+                  showTotal: (total) => `共 ${total} 行`,
+                }}
+                loading={loading}
+                bordered={true}
+                scroll={{ x: 360 }}
+                // scroll={true}
+                size='small'
+              />
+            </div>
+          )}
+        </div>
+        {vis ? (
+          <Drawer
+            title={vis.title}
+            placement='right'
+            forceRender={true}
+            width={1659}
+            closable={true}
+            onClose={this.onDrawerClose}
+            visible={this.state.drawerVisible}
+            getContainer={true}
+            drawerStyle={{ position: 'absolute', backgroundColor: '#393862' }}
+            destroyOnClose
+          >
+            <Vis
+              data={dataSource}
+              columns={columns}
+              type={vis.type}
+              title={vis.title}
+              params={vis.params}
+            />
+          </Drawer>
+        ) : (
+          ''
+        )}
       </ConfigProvider>
     );
   }

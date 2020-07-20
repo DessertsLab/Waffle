@@ -28,6 +28,8 @@ class BarChart extends React.Component {
       maxVal: maxVal,
       started: props.start,
     };
+
+    this.update = this.update.bind(this);
   }
 
   componentDidMount() {

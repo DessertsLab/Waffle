@@ -3,6 +3,7 @@ import Funnel from './Funnel';
 import BarRace from './BarRace';
 import Sankey from './Sankey';
 import GridLine from './GridLine';
+import Heat from './Heat';
 
 const Vis = (props) => {
   if (props.type === 'funnel') {
@@ -35,6 +36,15 @@ const Vis = (props) => {
   } else if (props.type === 'gridline') {
     return (
       <GridLine
+        data={props.data}
+        columns={props.columns}
+        title={props.title}
+        params={props.params}
+      />
+    );
+  } else if (props.type === 'heat') {
+    return (
+      <Heat
         data={props.data}
         columns={props.columns}
         title={props.title}

@@ -5,10 +5,15 @@ const Heat = props => {
     useEffect(() => {
 
         var mychart = echarts.init(document.getElementById('heat'))
-        var faw = ['1st', '2nd', '3rd',
-            '4th', '5th', '6th'];
-        var ccb = ['1st', '2nd', '3rd',
-            '4th', '5th', '6th'];
+        // var ydata = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
+        const columns = props.columns.map(col => col.dataIndex)
+        const columns_without_index = columns.slice(1)// remove index columns
+        var ydata = columns_without_index;
+        var xdata = columns_without_index;
+
+        props.data.forEach(e => {
+
+        })
 
         var data = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0],
         [1, 0, 0], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0],
@@ -38,44 +43,52 @@ const Heat = props => {
             // },
             animation: false,
             grid: {
-                height: '50%',
+                height: '80%',
                 left: '13%',
-                top: '20%',
+                top: '5%',
                 //backgroundColor:'white'
             },
             xAxis: {
-                name: 'CCW',
+                name: 'x',
                 nameTextStyle: {
-                    // padding: [0, 0, -60, -245],    // 四个数字分别为上右下左与原位置距离
+                    // padding: [0, 0, -60, -245],    //the position of text 
                     color: 'white'
                 },
                 type: 'category',
-                data: ccb,
-                textStyle: {
-                    color: 'white'
-                },
+                data: xdata,
+                // textStyle: {
+                //     color: 'white'
+                // },
                 axisLine: {
                     lineStyle: {
                         color: '#fff'
                     }
+                },
+                splitArea: {         // background split area if no data you can see it
+                    show: true,
+                    color: 'white'
+                },
+                axisLabel: {
+                    interval: 0,
+                    rotate: 50
                 }
-                // splitArea: {
-                //     show: true,
-                //     color: 'white'
-                // }
+
             },
             yAxis: {
-                name: 'FAW',
+                name: 'y',
                 nameTextStyle: {
-                    // padding: [0, 0, -210, -80],    // 四个数字分别为上右下左与原位置距离
+                    // padding: [0, 0, -210, -80], //the position of text
                     color: 'white'
                 },
                 type: 'category',
-                data: faw,
+                data: ydata,
                 axisLine: {
                     lineStyle: {
                         color: '#fff'
                     }
+                },
+                axisLabel: {
+                    interval: 0,
                 }
                 // splitArea: {
                 //     show: false
@@ -100,7 +113,7 @@ const Heat = props => {
                 type: 'heatmap',
                 data: data,
                 label: {
-                    show: true,
+                    show: false,
                     color: 'white'
                 },
                 emphasis: {

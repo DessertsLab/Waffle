@@ -29,7 +29,7 @@ const Heat = props => {
                     },
                     restore: {},
                     saveAsImage: {
-                        backgroundColor:'#393862'
+                        backgroundColor: '#393862'
                     }
                 }
             },
@@ -90,7 +90,7 @@ const Heat = props => {
                 min: -1,
                 max: 1,
                 // align: 'left',
-                textStyle:{color: 'white'},
+                textStyle: { color: 'white' },
                 calculable: true,
                 orient: 'vertical',
                 left: '90%',
@@ -99,11 +99,12 @@ const Heat = props => {
                 //right: '10%',
                 inRange: {
                     // color: ['#fff', '#330033']
-                    color: ['navy','white' ,'salmon']
+                    // color: ['navy','white' ,'salmon']
+                    color: props.params && props.params.inrange_color ? props.params.inrange_color : ['navy', 'white', 'salmon']
                 }
             },
             series: [{
-                name: 'Pearson',
+                name: columns[0],
                 type: 'heatmap',
                 data: data,
                 label: {

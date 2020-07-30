@@ -5,42 +5,34 @@ const Heat = props => {
     useEffect(() => {
 
         var mychart = echarts.init(document.getElementById('heat'))
-        // var ydata = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
         const columns = props.columns.map(col => col.dataIndex)
         const columns_without_index = columns.slice(1)// remove index columns
         var ydata = columns_without_index;
         var xdata = columns_without_index;
+        let data = []
 
-        props.data.forEach(e => {
-
+        props.data.forEach((dt, x) => {
+            columns_without_index.forEach((c, y) => {
+                data.push([x, y, dt[c]])
+            }
+            )
         })
-
-        var data = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0],
-        [1, 0, 0], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0],
-        [2, 0, 22], [2, 1, 22], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0],
-        [3, 0, 62], [3, 1, 38], [3, 2, 22], [3, 3, 5], [3, 4, 0], [3, 5, 0],
-        [4, 0, 73], [4, 1, 96], [4, 2, 84], [4, 3, 25], [4, 4, 37], [4, 5, 27],
-        [5, 0, 100], [5, 1, 100], [5, 2, 93], [5, 3, 100], [5, 4, 40], [5, 5, 40]
-
-        ];
-
-        data = data.map(function (item) {
-            return [item[1], item[0], item[2]];
-        });
 
         let option = {
             tooltip: {
                 position: 'top'
             },
-            // toolbox: {
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {
+                        backgroundColor:'#393862'
+                    }
+                }
+            },
             animation: false,
             grid: {
                 height: '80%',
@@ -95,9 +87,10 @@ const Heat = props => {
                 // }
             },
             visualMap: {
-                min: 0,
-                max: 100,
+                min: -1,
+                max: 1,
                 // align: 'left',
+                textStyle:{color: 'white'},
                 calculable: true,
                 orient: 'vertical',
                 left: '90%',
@@ -105,7 +98,8 @@ const Heat = props => {
                 // top: 'auto',    
                 //right: '10%',
                 inRange: {
-                    color: ['#fff', '#330033']
+                    // color: ['#fff', '#330033']
+                    color: ['navy','white' ,'salmon']
                 }
             },
             series: [{

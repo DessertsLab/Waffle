@@ -8,7 +8,7 @@ class MainDemo extends Component {
     super(props);
     this.state = {
       externalApiService: 'reports',
-      externalApiParam: 's_corr_main',
+      externalApiParam: 's_scatter3d_main',
       // externalApiParam: 's_1001_main',
     };
   }
